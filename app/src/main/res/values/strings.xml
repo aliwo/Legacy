@@ -3,6 +3,14 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
+
+    <string-array name="splash_quotes">
+        <item>성공은 열정을 잃지 않고 실패를 거듭할 수 있는 능력이다. - 윈스턴 처칠</item>
+        <item>Insanity=doing same thing over and over and expects result will be different -ALBERT EINSTEIN"</item>
+        <item>public static void kimchi - text03 </item>
+        <item> text04 </item>
+        <item> text05 </item>
+    </string-array>
+
 </resources>
