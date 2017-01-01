@@ -7,7 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/textbox_default"
-        android:textSize="20dp"
+        android:textSize="18dp"
+        android:id="@+id/default_textbox_editext"
         />
 
 </RelativeLayout>

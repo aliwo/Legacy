@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <declare-styleable name="defaultTextBox">
+        <attr name="minLines" format="reference|integer" />
+        <attr name="hint" format="reference|string" />
+        <attr name="TextpaddingLeft" format="reference|integer"/>
+    </declare-styleable>
 
 </resources>
