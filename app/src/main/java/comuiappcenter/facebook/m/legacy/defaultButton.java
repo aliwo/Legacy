@@ -17,14 +17,12 @@ public class defaultButton extends RelativeLayout implements View.OnClickListene
     public defaultButton(Context context)
     {
         super(context);
-        this.setOnClickListener(this);
         initialize();
     }
 
     public defaultButton(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        this.setOnClickListener(this);
         initialize();
     }
 
@@ -33,13 +31,14 @@ public class defaultButton extends RelativeLayout implements View.OnClickListene
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(infService);
         View v = inflater.inflate(R.layout.default_button_layout, this, false);
+        this.setOnClickListener(this);
         addView(v);
     }
 
     @Override
     public void onClick(View v)
     {
-        Toast.makeText(v.getContext(), "버튼 눌렸습니다.", Toast.LENGTH_LONG).show();
+        Toast.makeText(v.getContext(), "레이아웃이 눌렸습니다.", Toast.LENGTH_LONG).show();
     }
 
 

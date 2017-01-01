@@ -16,12 +16,6 @@ public class QuestionActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
         acceptButton = (RelativeLayout) findViewById(R.id.accept_button);
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(QuestionActivity.this, "버튼 눌렸습니다.", Toast.LENGTH_LONG).show();
 
-            }
-        });
     }
 }
