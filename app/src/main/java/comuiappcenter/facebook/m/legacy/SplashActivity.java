@@ -16,7 +16,6 @@ import java.util.Random;
 public class SplashActivity extends AppCompatActivity implements View.OnClickListener
 {
     ImageView imageView;
-
     TextView textView;
     int randInt = 0;
 
