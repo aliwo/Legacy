@@ -2,6 +2,7 @@ package comuiappcenter.facebook.m.legacy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,13 +12,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.http.TextHttpResponseHandler;
+
 import java.util.Random;
+
+import cz.msebera.android.httpclient.Header;
+
+//test 라는 패스로 get 요청을 해서 서버 접속 여부를 확인합니다.
 
 public class SplashActivity extends AppCompatActivity implements View.OnClickListener
 {
     ImageView imageView;
     TextView textView;
+    TextView bottomText;
     int randInt = 0;
+    RestClient client;
+    public static final String PREFS_NAME = "UserInfo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -26,11 +36,47 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_splash);
         textView = (TextView) findViewById(R.id.text_splash);
         imageView = (ImageView) findViewById(R.id.imageView_splash);
+        bottomText =  (TextView) findViewById(R.id.textView_splash_bottom);
 
         //스플래시 이미지 형성
         Random random = new Random();
         randInt = random.nextInt(4); // 0~4 까지 난수 생성.
         setImgages();
+
+        //서버 연결 확인
+        client = new RestClient(this); // RestClient 객체 생성.
+        client.get("/test", null, new TextHttpResponseHandler()
+        {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
+                    {
+                        Toast.makeText(getApplicationContext(), "서버 접속 실패"+client.BASE_URL, Toast.LENGTH_SHORT).show();
+                        bottomText.setText("서버접속 실패"+client.BASE_URL);
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString)
+                    {
+                        Toast.makeText(getApplicationContext(), responseString, Toast.LENGTH_SHORT).show();
+                        bottomText.setText("서버접속 성공"+client.BASE_URL);
+                        userInfo.isOnline = true;
+                    }
+        });
+
+        //저장된 로그인 정보가 있는지 확인합니다. 만약 없으면 LoginActivity로 intent 됩니다.
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        userInfo.StudentID = settings.getString("StudentID", null);
+        userInfo.Password = settings.getString("Password", null);
+        if(userInfo.StudentID == null)
+        {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+        else if (userInfo.StudentID != null) // 만약 학번이 존재하면 로그인을 시도합니다.
+        {
+            Toast.makeText(getApplicationContext(), userInfo.StudentID+"와"+"\n 비밀번호:"+userInfo.Password+"로 로그인을 시도합니다.", Toast.LENGTH_SHORT).show();
+
+        }
 
         //클릭하면 intent
         imageView.setOnClickListener(this);
