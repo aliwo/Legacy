@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="check"
+        android:title="진동여부"
+        android:defaultValue="false"
+        android:summary="체크하면 진동설정"
+        />
+    <Preference
+        android:key="notice"
+        android:title="공지사항"
+        android:summary="공지사항을 보려면 클릭하세요."
+        android:targetClass="comuiappcenter.facebook.m.legacy.NoticeActivity"
+        />
+    <EditTextPreference
+        android:key="edit"
+        android:title="음량선택"
+        android:defaultValue="20"
+        android:summary="음량을 선택하시오"
+        />
+
+</PreferenceScreen>

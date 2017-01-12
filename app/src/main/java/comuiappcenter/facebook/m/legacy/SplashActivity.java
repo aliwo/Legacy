@@ -68,6 +68,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         userInfo.StudentID = settings.getString("StudentID", null);
         userInfo.Password = settings.getString("Password", null);
+        userInfo.NickName = settings.getString("NickName", null);
         if(userInfo.StudentID == null)
         {
             Intent intent = new Intent(this, LoginActivity.class);

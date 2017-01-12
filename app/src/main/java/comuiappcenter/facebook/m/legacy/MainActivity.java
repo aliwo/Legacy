@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +26,9 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -35,6 +39,11 @@ public class MainActivity extends AppCompatActivity
     LinearLayout myquestionsLayout;
     LinearLayout questionsWaitingMeLayout;
     RestClient client;
+    TextView NavNickName;
+    ImageView NavFace;
+    View HeaderLayout;
+    TextView moreMyQuestion;
+    TextView moreWaitingQuestions;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
@@ -63,9 +72,30 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        HeaderLayout = navigationView.getHeaderView(0);
+        NavNickName = (TextView) HeaderLayout.findViewById(R.id.nav_nick_name);
+        if(userInfo.NickName != null) NavNickName.setText(sayHi()+" "+userInfo.NickName+"님");
+        HeaderLayout.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, userInfo.class);
+                startActivity(intent);
+            }
+        });
 
         //내가한 질문들을 구현합니다. (서버에서 불러옵니다.)
         myquestionsLayout = (LinearLayout) findViewById(R.id.linear_layout_my_questions);
+        moreMyQuestion = (TextView) findViewById(R.id.more_my_question);
+        moreMyQuestion.setOnClickListener(new View.OnClickListener()  // 더보기 버튼 구현
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // 더보기 Activity로 intent 하자.
+            }
+        });
         RequestParams params = new RequestParams();
         params.put("StudentID", userInfo.StudentID);
         client.post("/my_question", params, new JsonHttpResponseHandler()
@@ -98,7 +128,19 @@ public class MainActivity extends AppCompatActivity
 
 
         //내 답변을 기다리는 질문들을 구현합니다. (서버에서 불러옵니다.)
+        //클라이언트가 서버에 관심 수업 10개를 보내주면,
+        //서버는 해당 카테고리의 최신 글을 한 카테고리당 3개씩 가져와서, 가장 최신순으로 10개를 정렬 (나머지 20개는 짤)
+        //JSON 배열을 클라이언트에 보내준다.
         questionsWaitingMeLayout = (LinearLayout) findViewById(R.id.linear_layout_questions_waiting_my_answer);
+        moreWaitingQuestions = (TextView) findViewById(R.id.more_questions_waiting_me);
+        moreMyQuestion.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //내 답변을 기다리는 질문들을 더 보여주도록 intent 하자.
+            }
+        });
         RequestParams params2 = new RequestParams();
         params.put("StudentID", userInfo.StudentID);
 
@@ -182,7 +224,7 @@ public class MainActivity extends AppCompatActivity
 
         else if (id == R.id.nav_setting)
         {
-            Intent intent = new Intent(this, AppCompatPreferenceActivity.class);
+            Intent intent = new Intent(this, OptionsActivity.class);
             startActivity(intent);
         }
 
@@ -190,4 +232,18 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public String sayHi()
+    {
+        String[] greeting = new String[5];
+        int rand = new Random().nextInt(5);
+        greeting[0] = "환영합니다";
+        greeting[1] = "오늘 하루도 화이팅!";
+        greeting[2] = "잠깐 쉬고 공부해도 괜찮아요";
+        greeting[3] = "힘차게 공부해 볼까요? :)";
+        greeting[4] = "맛있는 거 먹고 공부 시작할까요?";
+
+        return greeting[rand];
+    }
+
 }
