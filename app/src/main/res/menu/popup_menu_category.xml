@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="search"
+        android:id="@+id/search"
+        android:icon="@android:drawable/ic_menu_search"/>
+    <item android:title="add"
+        android:id="@+id/add"
+        android:icon="@android:drawable/ic_menu_add"/>
+    <item android:title="찾아보기"
+        android:id="@+id/else_popup"
+        android:icon="@android:drawable/ic_menu_edit">
+        <menu>
+            <item android:title="share"
+                android:id="@+id/share"
+                android:icon="@android:drawable/ic_menu_share"/>
+        </menu>
+    </item>
+
+</menu>

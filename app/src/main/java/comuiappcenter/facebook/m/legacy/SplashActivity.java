@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import java.util.Random;
@@ -75,7 +76,23 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         else if (userInfo.StudentID != null) // 만약 학번이 존재하면 로그인을 시도합니다.
         {
             Toast.makeText(getApplicationContext(), userInfo.StudentID+"와"+"\n 비밀번호:"+userInfo.Password+"로 로그인을 시도합니다.", Toast.LENGTH_SHORT).show();
+            RequestParams params = new RequestParams();
+            params.put("StudentID", userInfo.StudentID);
+            params.put("Password", userInfo.Password);
+            client.post("/login", params, new TextHttpResponseHandler() // 로그인 요청 전송
+            {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
+                {
+                    bottomText.setText("자동 로그인 실패");
+                }
 
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString)
+                {
+                    Toast.makeText(getApplicationContext(), responseString, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         //클릭하면 intent

@@ -16,7 +16,39 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/textView2" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="내 답변을 기다리는 질문들"
+        android:id="@+id/questions_waiting_my_answer"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="내 질문들"
+        android:id="@+id/my_questions"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/my_questions"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/questions_waiting_my_answer"
+        android:id="@+id/linear_layout_my_questions"
+        android:background="@drawable/board_temp_shape"></LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/questions_waiting_my_answer"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linear_layout_questions_waiting_my_answer"
+        android:background="@drawable/board_temp_shape"></LinearLayout>
 
 </RelativeLayout>

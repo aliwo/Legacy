@@ -38,4 +38,12 @@
             app:minLines="4"
             />
     </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/InnerRelative2_answerList"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/answer_zone_linear"></LinearLayout>
 </RelativeLayout>
