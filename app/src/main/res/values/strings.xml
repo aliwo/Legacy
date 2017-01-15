@@ -19,9 +19,8 @@
 -rudyard kipling, 정글북의 저자.</item>
         <item> 당신은 당신이 생각하는 당신이 아니다. 당신의 생각, 그게 당신이다.
 (You are not what you think you are;but what you think,you are) - dale carnegie</item>
-
-
     </string-array>
+
     <string name="title_activity_answer_list">AnswerListActivity</string>
     <string name="title_activity_login">Sign in</string>
 

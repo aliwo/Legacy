@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity
         //동적으로 변하지 않는 Navigation Menu
         if (id == R.id.nav_interestd_class_setting)
         {
-            Intent intent = new Intent(this, InterestdClassSettingsActivity.class);
+            Intent intent = new Intent(this, InterestedClassSettingActivity.class);
             startActivity(intent);
         }
 

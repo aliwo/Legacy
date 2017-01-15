@@ -34,6 +34,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_splash);
         textView = (TextView) findViewById(R.id.text_splash);
         imageView = (ImageView) findViewById(R.id.imageView_splash);
@@ -43,6 +44,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         Random random = new Random();
         randInt = random.nextInt(4); // 0~4 까지 난수 생성.
         setImgages();
+        textView.setVisibility(View.INVISIBLE);
 
         //서버 연결 확인
         client = new RestClient(this); // RestClient 객체 생성.
@@ -115,11 +117,11 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
 
         switch(randInt)
         {
-            case 0: imageView.setImageResource(R.drawable.dark_history); textView.setText(quotes[0]); break;
-            case 1: imageView.setImageResource(R.drawable.cozy_room1); textView.setText(quotes[1]); break;
-            case 2: imageView.setImageResource(R.drawable.cozy_room2); textView.setText(quotes[2]); break;
-            case 3: imageView.setImageResource(R.drawable.cozy_room3); textView.setText(quotes[3]); break;
-            case 4: imageView.setImageResource(R.drawable.cozy_room4); textView.setText(quotes[4]); break;
+            case 0: imageView.setImageResource(R.drawable.splash_01);  break;
+            case 1: imageView.setImageResource(R.drawable.splash_02);  break;
+            case 2: imageView.setImageResource(R.drawable.splash_03);  break;
+            case 3: imageView.setImageResource(R.drawable.splash_04);  break;
+            case 4: imageView.setImageResource(R.drawable.cozy_room4);  break;
         }
     }
 
