@@ -1,9 +1,11 @@
 package comuiappcenter.facebook.m.legacy;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,6 +32,7 @@ import org.w3c.dom.Text;
 
 import java.util.Random;
 
+import comuiappcenter.facebook.m.legacy.customView.QuestionPreview;
 import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity
@@ -84,6 +87,13 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        //임시적으로 관심 수업을 만들어 봅니다.
+        userInfo.InterestedClass[0] = "통계학";
+        userInfo.InterestedClass[1] = "디지털";
+        userInfo.InterestedClass[2] = "국제통상법";
+        userInfo.InterestedClass[3] = "C언어";
+        userInfo.InterestedClass[4] = "모바일 소프트웨어";
 
         //내가한 질문들을 구현합니다. (서버에서 불러옵니다.)
         myquestionsLayout = (LinearLayout) findViewById(R.id.linear_layout_my_questions);
@@ -142,16 +152,55 @@ public class MainActivity extends AppCompatActivity
             }
         });
         RequestParams params2 = new RequestParams();
-        params.put("StudentID", userInfo.StudentID);
+        String ClassSent = userInfo.randInterest();
+        params2.put("Interest", ClassSent); // 랜덤한 관심수업을 전송합니다.
+
+        client.post("/waiting_question", params2, new JsonHttpResponseHandler(){
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse)
+            {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(MainActivity.this, "답변을 기다리는 질문을 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) //서버 통신에 성공하면 내 질문들을 불러와요.
+            {
+                Toast.makeText(MainActivity.this, "날 기다리는 질문"+response.length()+"개", Toast.LENGTH_SHORT).show();
+                for (int i = 0; i< response.length(); i++)
+                {
+                    try
+                    {
+                        JSONObject result = response.getJSONObject(i);
+                        String title = result.getString("title");
+                        String body = result.getString("body");
+                        final String QuestionID = result.getString("_id"); // 이런식으로 id를 가져올 수 있나? string이 아니던데
+                        QuestionPreview preview = new QuestionPreview(MainActivity.this);
+                        preview.title.setText(title);
+                        preview.body.setText(body);
+                        // 나중에 margin도 설정해야 할듯.
+                        preview.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                Intent intent = new Intent(MainActivity.this, QuestionViewActivity.class);
+                                intent.putExtra("QuestionWas", QuestionID);
+                                startActivity(intent);
+
+                            }
+                        });
+
+                        questionsWaitingMeLayout.addView(preview);
+                    }catch(JSONException e) {e.printStackTrace();}
+                }
+                super.onSuccess(statusCode, headers, response);
+            }
+        });
 
 
 
-        //임시적으로 관심 수업을 만들어 봅니다.
-        userInfo.InterestedClass[0] = "통계학";
-        userInfo.InterestedClass[1] = "디지털";
-        userInfo.InterestedClass[2] = "국제통상법";
-        userInfo.InterestedClass[3] = "C언어";
-        userInfo.InterestedClass[4] = "모바일 소프트웨어";
+
 
         Menu menuNav = navigationView.getMenu();
         for(int i=0; i<userInfo.InterestedClass.length; i++)
@@ -210,9 +259,11 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id != R.id.nav_interestd_class_setting && id != R.id.nav_setting) // 동적으로 생성된 아이템이 아니라면
+        if (id != R.id.nav_interestd_class_setting && id != R.id.nav_setting && id != R.id.nav_logout) // 동적으로 생성된 아이템이 아니라면
         {
-            Toast.makeText(MainActivity.this, "동적 할당된 메뉴를 선택하셨습니다.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, EclassActivity.class);
+            intent.putExtra("ClassName",item.getTitle());
+            startActivity(intent);
         }
 
         //동적으로 변하지 않는 Navigation Menu
@@ -226,6 +277,28 @@ public class MainActivity extends AppCompatActivity
         {
             Intent intent = new Intent(this, OptionsActivity.class);
             startActivity(intent);
+        }
+
+        if (id == R.id.nav_logout)
+        {
+            //서버에 logout요청을 한 뒤 성공하면 preference를 모두 지우고, login 화면으로 이동합니다.
+            client = new RestClient(MainActivity.this);
+            client.get("/logout", null, new TextHttpResponseHandler()
+            {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
+                {
+                    Toast.makeText(MainActivity.this, "서버에 요청 실패", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString)
+                {
+                    MainActivity.this.getSharedPreferences(SplashActivity.PREFS_NAME, 0).edit().clear().commit();
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

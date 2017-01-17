@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Random;
+
 /**
  * Created by Administrator on 2017-01-03.
  */
@@ -20,6 +22,7 @@ public class userInfo extends AppCompatActivity
     TextView MajorText;
     EditText InterestedClassText;
     Button SaveButton;
+    RestClient client;
 
     //프리퍼런스의 이름은 "UserInfo" 이고 내부적으로 이곳에 사용자 정보가 저장됩니다. SplashActivity에 정의되어 있습니다.
     //2017-01-11 이 클래스를 액티비티로 바꿔서, 사용자가 자기 정보를 확인할 수 있도록 만들자.
@@ -33,6 +36,7 @@ public class userInfo extends AppCompatActivity
     public static String SecondMajor;
 
     public static String[] InterestedClass = new String[10];
+    public static int LengthInterestedClass;
     public static boolean isOnline = false;
 
     @Override
@@ -50,6 +54,7 @@ public class userInfo extends AppCompatActivity
         NickNameText.setText(NickName);
         MajorText.setText("전공: "+Major);
         SaveButton.setOnClickListener(new onSaveButtonClicked());
+        client = new RestClient(this);
     }
 
     public class onSaveButtonClicked implements View.OnClickListener
@@ -62,9 +67,28 @@ public class userInfo extends AppCompatActivity
             editor.putString("NickName", NickNameText.getText().toString()); // 닉네임을 수정합니다.
             NickName = NickNameText.getText().toString();
             editor.commit(); // commit을 해야 값이 들어갑니다.
+
+            //client.post()
+
             Toast.makeText(getApplicationContext(), "닉네임이 수정되었습니다.", Toast.LENGTH_SHORT).show();
         }
     }
 
+    public static String randInterest()
+    {
+
+        for(int i=0; i<InterestedClass.length; i++)
+        {
+            if(userInfo.InterestedClass[i] == null)
+            {
+                userInfo.LengthInterestedClass = i;
+                i = InterestedClass.length; // for 문을 빠져 나갑니다.
+            }
+        }
+        Random random = new Random();
+        int randInt = random.nextInt(LengthInterestedClass);
+
+        return InterestedClass[randInt];
+    }
 
 }

@@ -25,6 +25,8 @@ public class ClassList extends ArrayAdapter<String > implements AdapterView.OnIt
         TextView title;
         ImageView icon;
 
+
+
         public ClassList(Context context, int resId, String[] items)
         {
             super(context, resId, items);
