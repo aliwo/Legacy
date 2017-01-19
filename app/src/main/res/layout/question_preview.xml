@@ -19,6 +19,38 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/body_textview_question_preview"
-        android:layout_below="@+id/title_textview_question_preview"
+        android:paddingTop="10dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="비어있음"
+        android:id="@+id/author_textview_preview"
+        android:paddingLeft="40dp"
+        android:layout_alignBottom="@+id/title_textview_question_preview"
+        android:layout_toEndOf="@+id/title_textview_question_preview"
+        android:layout_marginStart="61dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="답변 수:"
+        android:id="@+id/answers_num_textview_preview"
+        android:layout_below="@+id/body_textview_question_preview"
+        android:layout_alignEnd="@+id/author_textview_preview"
+        android:textSize="15dp"
+        android:paddingRight="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="카테고리"
+        android:id="@+id/category_textview_question_preview"
+        android:paddingTop="30dp"
+        android:layout_below="@+id/body_textview_question_preview"
         android:layout_alignParentStart="true" />
 </RelativeLayout>

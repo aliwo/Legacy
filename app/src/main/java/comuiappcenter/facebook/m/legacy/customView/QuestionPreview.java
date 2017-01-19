@@ -18,6 +18,9 @@ public class QuestionPreview extends RelativeLayout
 {
     public TextView title;
     public TextView body;
+    public TextView author;
+    public TextView answersTextView;
+    public TextView categoryTextView;
 
     public QuestionPreview(Context context)
     {
@@ -38,6 +41,9 @@ public class QuestionPreview extends RelativeLayout
         addView(v);
         title = (TextView) findViewById(R.id.title_textview_question_preview);
         body = (TextView) findViewById(R.id.body_textview_question_preview);
+        author = (TextView) findViewById(R.id.author_textview_preview);
+        answersTextView = (TextView) findViewById(R.id.answers_num_textview_preview);
+        categoryTextView = (TextView) findViewById(R.id.category_textview_question_preview);
     }
 
     private void getAttrs(AttributeSet attrs)

@@ -76,6 +76,16 @@ public class QuestionViewActivity extends AppCompatActivity
             }
         });
 
+        //Answer버튼 이벤트 처리. 버튼을 누르면 답변 화면으로 넘어갑니다.
+        AnswerButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Questiontitle.mEditText.setVisibility(View.INVISIBLE);
+            }
+        });
+
         //현재까지 해당 질문에 달린 답변 list를 불러 옵니다.
 
         //client.post("/find_answers", params)
