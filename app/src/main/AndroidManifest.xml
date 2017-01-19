@@ -28,7 +28,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".QuestionActivity" />
-        <activity android:name=".AnswerListActivity" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
@@ -42,7 +41,8 @@
             android:label="@string/title_activity_eclass"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".QuestionViewActivity" />
-        <activity android:name=".QuestionListActivity"></activity>
+        <activity android:name=".QuestionListActivity" />
+        <activity android:name=".AnswerActivity"></activity>
     </application>
 
 </manifest>

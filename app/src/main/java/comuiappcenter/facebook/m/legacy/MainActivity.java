@@ -187,7 +187,6 @@ public class MainActivity extends AppCompatActivity
                                 Intent intent = new Intent(MainActivity.this, QuestionViewActivity.class);
                                 intent.putExtra("QuestionWas", QuestionID);
                                 startActivity(intent);
-
                             }
                         });
 
