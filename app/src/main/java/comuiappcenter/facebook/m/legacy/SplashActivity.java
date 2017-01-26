@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -15,7 +16,9 @@ import android.widget.Toast;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -98,6 +101,9 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
             });
         }
 
+        //저장된 사용자 정보를 불러옵니다.
+        loadUserInfo(settings);
+
         //클릭하면 intent
         imageView.setOnClickListener(this);
     }
@@ -125,7 +131,19 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    public void loadUserInfo(SharedPreferences settings)
+    {
+        if(settings.getStringSet("InterestedClass", null) != null)
+        {
+            userInfo.InterestedClass.clear();
+            userInfo.InterestedClass.addAll(settings.getStringSet("InterestedClass", null));
 
+            for(int i =0; i<userInfo.InterestedClass.size(); i++)
+            {
+                Log.d("kimchi_retrive", userInfo.InterestedClass.get(i).toString());
+            }
+        }
+    }
 
 
 }

@@ -10,6 +10,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.plattysoft.leonids.ParticleSystem;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -35,7 +39,7 @@ public class userInfo extends AppCompatActivity
     public static String Major;
     public static String SecondMajor;
 
-    public static String[] InterestedClass = new String[10];
+    public static ArrayList<String> InterestedClass = new ArrayList<String>(); // 나중에 이름이 같고 교수가 다른 수업을 다른 객체로 구분하게 될 수도 있기 때문에 중복을 허용하는 ArrayList로 일단 해둠.
     public static int LengthInterestedClass;
     public static boolean isOnline = false;
 
@@ -67,28 +71,36 @@ public class userInfo extends AppCompatActivity
             editor.putString("NickName", NickNameText.getText().toString()); // 닉네임을 수정합니다.
             NickName = NickNameText.getText().toString();
             editor.commit(); // commit을 해야 값이 들어갑니다.
-
-            //client.post()
-
+            makeParticle();
             Toast.makeText(getApplicationContext(), "닉네임이 수정되었습니다.", Toast.LENGTH_SHORT).show();
+
         }
     }
+
+    public void makeParticle()
+    {
+        new ParticleSystem(this, 100, R.drawable.yellow_particle, 800)
+                .setSpeedRange(0.1f, 0.25f)
+                .oneShot(SaveButton, 100);
+    }
+
 
     public static String randInterest()
     {
 
-        for(int i=0; i<InterestedClass.length; i++)
+        for(int i=0; i<InterestedClass.size(); i++)
         {
-            if(userInfo.InterestedClass[i] == null)
+            if(userInfo.InterestedClass.get(i) == null)
             {
                 userInfo.LengthInterestedClass = i;
-                i = InterestedClass.length; // for 문을 빠져 나갑니다.
+                i = InterestedClass.size(); // for 문을 빠져 나갑니다.
             }
         }
         Random random = new Random();
-        int randInt = random.nextInt(LengthInterestedClass);
+        int randInt = 1;
+        if(InterestedClass.size() != 0) {randInt  = random.nextInt(InterestedClass.size());}
 
-        return InterestedClass[randInt];
+        return InterestedClass.get(randInt);
     }
 
 }

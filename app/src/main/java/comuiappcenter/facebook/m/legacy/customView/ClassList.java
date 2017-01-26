@@ -5,11 +5,18 @@ import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import comuiappcenter.facebook.m.legacy.userInfo;
+
+import java.util.List;
 
 import comuiappcenter.facebook.m.legacy.R;
 
@@ -20,14 +27,12 @@ public class ClassList extends ArrayAdapter<String > implements AdapterView.OnIt
 {
     //2016-12-11 완전히 독립적인 CustomList 생성 성공!
 
-        String[] titles;
+        List<String> titles;
         Context mcontext;
         TextView title;
         ImageView icon;
 
-
-
-        public ClassList(Context context, int resId, String[] items)
+        public ClassList(Context context, int resId, List<String> items)
         {
             super(context, resId, items);
             mcontext = context;
@@ -35,7 +40,7 @@ public class ClassList extends ArrayAdapter<String > implements AdapterView.OnIt
         }
 
         @Override
-        public View getView (int position, View convertView, ViewGroup parent)
+        public View getView (final int position, View convertView, ViewGroup parent)
         {
             //if (titles[position] == null) {position == titles.length;}
             View v = convertView;
@@ -50,8 +55,17 @@ public class ClassList extends ArrayAdapter<String > implements AdapterView.OnIt
 
             title = (TextView) v.findViewById(R.id.textview_interested_class_list);
             icon = (ImageView) v.findViewById(R.id.image_view_interested_class_list);
-
-            title.setText(titles [position]);
+            title.setText(titles.get(position));
+            setappearFromLeftAnimation(v);
+            v.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    userInfo.InterestedClass.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
 
             return v;
         }
@@ -60,7 +74,7 @@ public class ClassList extends ArrayAdapter<String > implements AdapterView.OnIt
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
             Toast.makeText(mcontext.getApplicationContext(),
-                    titles[position],
+                    titles.get(position),
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -68,15 +82,32 @@ public class ClassList extends ArrayAdapter<String > implements AdapterView.OnIt
     public int getCount()
     {
         int count=0;
-        for(int i=0; i < titles.length; i++)
+        for(int i=0; i < titles.size(); i++)
         {
-            if(titles[i] != null)
+            if(titles.get(i) != null)
             {
                 ++count;
             }
         }
         return count;
     }
+
+    public void setappearFromLeftAnimation(View v)
+    {
+        AnimationSet set = new AnimationSet(true);
+
+        Animation animation = new AlphaAnimation(0.0f, 1.0f); //서서히 색이 어두워지라는 뜻
+        animation.setDuration(300);
+        set.addAnimation(animation);
+
+        animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, -2.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f
+        );
+        animation.setDuration(300);
+        v.setAnimation(animation);
+    }
+
 }
 
 

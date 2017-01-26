@@ -90,12 +90,12 @@ public class QuestionActivity extends AppCompatActivity
         {
             PopupMenu popup = new PopupMenu(QuestionActivity.this, v);
 
-            for(int i =0; i < 10; i++)
+            for(int i =0; i < userInfo.InterestedClass.size(); i++)
             {
-                if(userInfo.InterestedClass[i] !="비어 있음")
+                if(userInfo.InterestedClass.get(i) !="비어 있음")
                 {
-                    if(userInfo.InterestedClass[i] ==null) break;
-                    String InterestedClass = userInfo.InterestedClass[i];
+                    if(userInfo.InterestedClass.get(i) ==null) break;
+                    String InterestedClass = userInfo.InterestedClass.get(i);
                     popup.getMenu().add(InterestedClass);
                 }
             }

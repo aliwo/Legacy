@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -30,23 +32,30 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Random;
 
+import comuiappcenter.facebook.m.legacy.customView.MainRecyclerAdapter;
 import comuiappcenter.facebook.m.legacy.customView.QuestionPreview;
+import comuiappcenter.facebook.m.legacy.dataContainer.MyData;
 import cz.msebera.android.httpclient.Header;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
-    RelativeLayout relativeLayout;
-    LinearLayout myquestionsLayout;
+
     LinearLayout questionsWaitingMeLayout;
     RestClient client;
     TextView NavNickName;
-    ImageView NavFace;
     View HeaderLayout;
-    TextView moreMyQuestion;
     TextView moreWaitingQuestions;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    static ArrayList<MyData> MyDataset;
+    MyData myQuestionData;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
@@ -88,24 +97,17 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        //임시적으로 관심 수업을 만들어 봅니다.
-        userInfo.InterestedClass[0] = "통계학";
-        userInfo.InterestedClass[1] = "디지털";
-        userInfo.InterestedClass[2] = "국제통상법";
-        userInfo.InterestedClass[3] = "C언어";
-        userInfo.InterestedClass[4] = "모바일 소프트웨어";
+        //RecyclerView와 CardView를 구현합니다.
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_my_questions);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        MyDataset = new ArrayList<>();
+        mAdapter = new MainRecyclerAdapter(this, MyDataset);
+        mRecyclerView.setAdapter(mAdapter);
 
         //내가한 질문들을 구현합니다. (서버에서 불러옵니다.)
-        myquestionsLayout = (LinearLayout) findViewById(R.id.linear_layout_my_questions);
-        moreMyQuestion = (TextView) findViewById(R.id.more_my_question);
-        moreMyQuestion.setOnClickListener(new View.OnClickListener()  // 더보기 버튼 구현
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // 더보기 Activity로 intent 하자.
-            }
-        });
+        MyDataset.add(new MyData("내 질문들", new ArrayList<QuestionPreview>()));
+        //서버와의 통신
         RequestParams params = new RequestParams();
         params.put("StudentID", userInfo.StudentID);
         client.post("/my_question", params, new JsonHttpResponseHandler()
@@ -126,10 +128,15 @@ public class MainActivity extends AppCompatActivity
                     try
                     {
                         JSONObject result = response.getJSONObject(i);
-                        TextView mtextView = new TextView(MainActivity.this);
                         String title = result.getString("title");
-                        mtextView.setText(title);
-                        myquestionsLayout.addView(mtextView);
+                        String body = result.getString("body");
+                        //서버에서 가져온 정보를 바탕으로 QuestionPreview 뷰를 만듭니다.
+                        QuestionPreview question = new QuestionPreview(MainActivity.this);
+                        question.title.setText(title);
+                        question.body.setText(body);
+                        //preview를 cardview 안에 넣습니다.
+                        MainRecyclerAdapter.ViewHolder Viewholder = (MainRecyclerAdapter.ViewHolder) mRecyclerView.findViewHolderForLayoutPosition(0);
+                        Viewholder.mLinearLayout.addView(question);
                     }catch(JSONException e) {e.printStackTrace();}
                 }
                 super.onSuccess(statusCode, headers, response);
@@ -138,19 +145,7 @@ public class MainActivity extends AppCompatActivity
 
 
         //내 답변을 기다리는 질문들을 구현합니다. (서버에서 불러옵니다.)
-        //클라이언트가 서버에 관심 수업 10개를 보내주면,
-        //서버는 해당 카테고리의 최신 글을 한 카테고리당 3개씩 가져와서, 가장 최신순으로 10개를 정렬 (나머지 20개는 짤)
-        //JSON 배열을 클라이언트에 보내준다.
-        questionsWaitingMeLayout = (LinearLayout) findViewById(R.id.linear_layout_questions_waiting_my_answer);
-        moreWaitingQuestions = (TextView) findViewById(R.id.more_questions_waiting_me);
-        moreMyQuestion.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //내 답변을 기다리는 질문들을 더 보여주도록 intent 하자.
-            }
-        });
+        MyDataset.add(new MyData("나의 답변을 기다리는 질문들", new ArrayList<QuestionPreview>()));
         RequestParams params2 = new RequestParams();
         String ClassSent = userInfo.randInterest();
         params2.put("Interest", ClassSent); // 랜덤한 관심수업을 전송합니다.
@@ -175,11 +170,10 @@ public class MainActivity extends AppCompatActivity
                         String title = result.getString("title");
                         String body = result.getString("body");
                         final String QuestionID = result.getString("_id"); // 이런식으로 id를 가져올 수 있나? string이 아니던데
-                        QuestionPreview preview = new QuestionPreview(MainActivity.this);
-                        preview.title.setText(title);
-                        preview.body.setText(body);
-                        // 나중에 margin도 설정해야 할듯.
-                        preview.setOnClickListener(new View.OnClickListener()
+                        QuestionPreview question = new QuestionPreview(MainActivity.this);
+                        question.title.setText(title);
+                        question.body.setText(body);
+                        question.setOnClickListener(new View.OnClickListener()
                         {
                             @Override
                             public void onClick(View v)
@@ -187,10 +181,13 @@ public class MainActivity extends AppCompatActivity
                                 Intent intent = new Intent(MainActivity.this, QuestionViewActivity.class);
                                 intent.putExtra("QuestionWas", QuestionID);
                                 startActivity(intent);
+                                // 나중에 margin도 설정해야 할듯.
                             }
                         });
+                        //preview를 cardview 안에 넣습니다.
+                        MainRecyclerAdapter.ViewHolder Viewholder = (MainRecyclerAdapter.ViewHolder) mRecyclerView.findViewHolderForLayoutPosition(1);
+                        Viewholder.mLinearLayout.addView(question);
 
-                        questionsWaitingMeLayout.addView(preview);
                     }catch(JSONException e) {e.printStackTrace();}
                 }
                 super.onSuccess(statusCode, headers, response);
@@ -198,15 +195,12 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-
-
-
         Menu menuNav = navigationView.getMenu();
-        for(int i=0; i<userInfo.InterestedClass.length; i++)
+        for(int i=0; i<userInfo.InterestedClass.size(); i++)
         {
-            if(userInfo.InterestedClass[i] != null)
+            if(userInfo.InterestedClass.get(i) != null)
             {
-                menuNav.add(R.id.interested_class_menu, Menu.NONE, Menu.NONE,userInfo.InterestedClass[i]);
+                menuNav.add(R.id.interested_class_menu, Menu.NONE, Menu.NONE, userInfo.InterestedClass.get(i));
             } //일단 item id는
         }
     }

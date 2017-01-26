@@ -11,54 +11,24 @@
     tools:context="comuiappcenter.facebook.m.legacy.QuestionViewActivity">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:id="@+id/upper_relativelayout_question_view"
-        >
-    <comuiappcenter.facebook.m.legacy.defaultTextBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:minLines="1"
-        android:id="@+id/title_question_view"
-        android:paddingBottom="5dp">
-    </comuiappcenter.facebook.m.legacy.defaultTextBox>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_below="@+id/upper_relativelayout_question_view"
-        android:layout_height="100dp"
-        android:id="@+id/body_box_relative_layout"
-        >
-
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:id="@+id/scrollView"
-        android:layout_alignParentStart="true" >
-
-        <comuiappcenter.facebook.m.legacy.defaultTextBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/body_question_view"
-            app:minLines="2"
-            />
-    </ScrollView>
-    </RelativeLayout>
-
-    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/middle_relativelayout_question_view"
             android:layout_below="@+id/body_box_relative_layout"
             android:layout_alignParentStart="true">
 
-            <ListView
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/yellow_stroke"
+            android:id="@+id/imageView4" />
+
+        <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/listview_question_view"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true" />
+            android:layout_below="@+id/imageView4"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 
 
@@ -68,5 +38,53 @@
         android:id="@+id/button_question_view"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/upper_relativelayout_question_view"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <comuiappcenter.facebook.m.legacy.defaultTextBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:minLines="1"
+        android:id="@+id/title_question_view"
+        android:paddingBottom="5dp">
+    </comuiappcenter.facebook.m.legacy.defaultTextBox>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/yellow_stroke"
+            android:id="@+id/imageView3"
+            android:layout_below="@+id/title_question_view"
+
+            android:paddingTop="2dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:id="@+id/body_box_relative_layout"
+        android:layout_below="@+id/upper_relativelayout_question_view"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="6dp">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:id="@+id/scrollView"
+        android:layout_alignParentStart="true" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/body_question_view"
+            />
+    </ScrollView>
+
+    </RelativeLayout>
 
 </RelativeLayout>

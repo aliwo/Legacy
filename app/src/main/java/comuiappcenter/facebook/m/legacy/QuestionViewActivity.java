@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -25,7 +26,7 @@ import cz.msebera.android.httpclient.Header;
 public class QuestionViewActivity extends AppCompatActivity
 {
     defaultTextBox Questiontitle;
-    defaultTextBox Questionbody;
+    TextView Questionbody;
     RelativeLayout AnswerButton;
     RelativeLayout middleLayout;
     ListView mAnswerList;
@@ -49,7 +50,7 @@ public class QuestionViewActivity extends AppCompatActivity
 
         //View를 선언합니다.
         Questiontitle = (defaultTextBox) findViewById(R.id.title_question_view);
-        Questionbody = (defaultTextBox) findViewById(R.id.body_question_view);
+        Questionbody = (TextView) findViewById(R.id.body_question_view);
         AnswerButton = (RelativeLayout) findViewById(R.id.button_question_view);
         middleLayout = (RelativeLayout) findViewById(R.id.middle_relativelayout_question_view);
         mAnswerList = (ListView) findViewById(R.id.listview_question_view);
@@ -80,7 +81,7 @@ public class QuestionViewActivity extends AppCompatActivity
                         String title = result.getString("title"); // 질문 제목
                         String body = result.getString("body"); // 질문 내용
                         Questiontitle.mEditText.setText(title);
-                        Questionbody.mEditText.setText(body);
+                        Questionbody.setText(body);
                         AnswerJSONArray = result.getJSONArray("answer");//답변 내용을 가져옵니다.
 
                         //서버에서 받은 답변을 가지고 list를 구현합니다.

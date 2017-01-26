@@ -34,7 +34,13 @@
         <activity android:name=".userInfo" />
         <activity android:name=".OptionsActivity" />
         <activity android:name=".NoticeActivity" />
-        <activity android:name=".InterestedClassSettingActivity" />
+        <activity android:name=".InterestedClassSettingActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.SEARCH" />
+        </intent-filter>
+        <meta-data android:name="android.app.searchable"
+            android:resource="@xml/searchable"/>
+        </activity>
         <activity android:name=".InterestedClassSearchActivity" />
         <activity
             android:name=".EclassActivity"

@@ -3,8 +3,8 @@
     android:shape="rectangle">
 
     <stroke
-        android:width="5dp"
-        android:color="@color/realGreen"
+        android:width="1dp"
+        android:color="@color/cardview_shadow_end_color"
         > </stroke>
 
 </shape>

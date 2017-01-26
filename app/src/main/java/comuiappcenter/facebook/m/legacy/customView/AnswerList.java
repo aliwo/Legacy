@@ -1,5 +1,6 @@
 package comuiappcenter.facebook.m.legacy.customView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.plattysoft.leonids.ParticleSystem;
 
 import org.w3c.dom.Text;
 
@@ -68,9 +71,7 @@ public class AnswerList extends ArrayAdapter<String > implements AdapterView.OnI
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(mcontext.getApplicationContext(),
-                        "춫천",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(mcontext.getApplicationContext(), "춫천", Toast.LENGTH_LONG).show();
             }
         });
 

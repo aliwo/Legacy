@@ -29,7 +29,7 @@ import cz.msebera.android.httpclient.protocol.HttpContext;
 public class RestClient
 {
     private static Context context;
-    public static final String BASE_URL = "http://192.168.219.147:3000"; //서버 주소
+    public static final String BASE_URL = "http://192.168.219.107:3000"; //서버 주소
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public RestClient(Context context)
